@@ -1839,11 +1839,30 @@ func canProxyDefault() bool {
 	return settings.Loopingback.Load()
 }
 
+// lockdownPid is the proxy id that Default, Bootstrap and System dns egress via while
+// global lockdown is on. Empty means there is no lockdown proxy, and such dns fails closed.
+var lockdownPid atomic.Value // string
+
+// SetLockdownProxy sets the proxy id used by Default, Bootstrap and System dns under
+// global lockdown. An empty pid leaves those transports blocked.
+func SetLockdownProxy(pid string) {
+	lockdownPid.Store(pid)
+}
+
+func getLockdownProxy() string {
+	pid, _ := lockdownPid.Load().(string)
+	return pid
+}
+
 // UnproxiablePid returns the proxy id for transports that can not be proxied
-// (Default, Bootstrap, System). Under global lockdown these fail closed (block),
-// otherwise they egress via the exit (loopback) or base proxy as before.
+// (Default, Bootstrap, System). Under global lockdown they egress via the lockdown proxy,
+// and fail closed (block) when there is none. Otherwise they egress via the exit
+// (loopback) or base proxy as before.
 func UnproxiablePid() string {
 	if settings.GlobalLockdown.Load() {
+		if pid := getLockdownProxy(); pid != "" {
+			return pid
+		}
 		return NetNoProxy
 	}
 	if settings.Loopingback.Load() {

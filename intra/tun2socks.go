@@ -38,6 +38,7 @@ import (
 
 	x "github.com/celzero/firestack/intra/backend"
 	"github.com/celzero/firestack/intra/core"
+	"github.com/celzero/firestack/intra/dnsx"
 	crt "github.com/celzero/firestack/intra/core/runtime"
 	"github.com/celzero/firestack/intra/ipn"
 	"github.com/celzero/firestack/intra/netstack"
@@ -288,6 +289,13 @@ func Loopback(y bool) {
 func GlobalLockdown(y bool) {
 	ok := settings.GlobalLockdown.CompareAndSwap(!y, y)
 	log.I("tun: global lockdown? %t / ok? %t", y, ok)
+}
+
+// LockdownProxy sets the proxy id that Default, Bootstrap and System dns egress via under
+// global lockdown. An empty id keeps them blocked.
+func LockdownProxy(pid string) {
+	dnsx.SetLockdownProxy(pid)
+	log.I("tun: lockdown proxy: %q", pid)
 }
 
 // If set, use SystemDNS to resolve undelegated (.lan, .internal, .arpa etc) domains.
