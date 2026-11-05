@@ -1839,6 +1839,19 @@ func canProxyDefault() bool {
 	return settings.Loopingback.Load()
 }
 
+// UnproxiablePid returns the proxy id for transports that can not be proxied
+// (Default, Bootstrap, System). Under global lockdown these fail closed (block),
+// otherwise they egress via the exit (loopback) or base proxy as before.
+func UnproxiablePid() string {
+	if settings.GlobalLockdown.Load() {
+		return NetNoProxy
+	}
+	if settings.Loopingback.Load() {
+		return NetExitProxy
+	}
+	return NetBaseProxy
+}
+
 func proxyForDefault(pid string) string {
 	if canProxyDefault() {
 		return pid

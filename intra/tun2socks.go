@@ -283,6 +283,13 @@ func Loopback(y bool) {
 	log.I("tun: loopback? %t / ok? %t", y, ok)
 }
 
+// GlobalLockdown informs the network stack whether global proxy lockdown is on.
+// When on, Default, Bootstrap and System dns must never egress via the base proxy.
+func GlobalLockdown(y bool) {
+	ok := settings.GlobalLockdown.CompareAndSwap(!y, y)
+	log.I("tun: global lockdown? %t / ok? %t", y, ok)
+}
+
 // If set, use SystemDNS to resolve undelegated (.lan, .internal, .arpa etc) domains.
 func UndelegatedDomains(useSystemDNS bool) {
 	ok := settings.SystemDNSForUndelegatedDomains.CompareAndSwap(!useSystemDNS, useSystemDNS)

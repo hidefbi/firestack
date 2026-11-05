@@ -866,14 +866,11 @@ func (t *transport) Query(network string, q *dns.Msg, smm *x.DNSSummary) (r *dns
 	var elapsed time.Duration
 	var qerr *dnsx.QueryError
 
-	loopingback := settings.Loopingback.Load()
-	canproxy := dnsx.CanUseProxy(t.id)
+	// bootstrap and system are never proxied, even in loopback mode, so that
+	// they can not egress via pids chosen by kotlin-land (see dnsx.UnproxiablePid)
+	canproxy := dnsx.CanUseProxy(t.id) && t.id != dnsx.Bootstrap && t.id != dnsx.System
 	if !canproxy { // bootstrap/default may not be proxied
-		if loopingback {
-			pid = dnsx.NetExitProxy
-		} else {
-			pid = dnsx.NetBaseProxy
-		}
+		pid = dnsx.UnproxiablePid()
 	} else if r := t.relay; len(r) > 0 {
 		pid = t.chooseProxy(smm.FID, r)
 	} else {

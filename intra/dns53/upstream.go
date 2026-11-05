@@ -156,14 +156,8 @@ func (t *transport) pxdial(network, pid string) (*dns.Conn, string, uint64, erro
 	// dnsx.CanUseProxy may return true even when Bootstrap is System DNS
 	if t.id == dnsx.Bootstrap || t.id == dnsx.System || !dnsx.CanUseProxy(t.id) { // bootstrap/default never be proxied
 		// never proxy dns53 transport with "bootstrap" id is a clone of dnsx.System
-		if settings.Loopingback.Load() {
-			// TODO: if system dns is always exited (regardless of whether "self uid" is set
-			// to be proxies by user-set rules, that is, by kotlin-land in Flow()), then
-			// dnsx.NetBaseProxy is okay to use in loopback scenarios.
-			pid = dnsx.NetExitProxy
-		} else {
-			pid = dnsx.NetBaseProxy
-		}
+		// under global lockdown, this is dnsx.NetNoProxy (fail closed)
+		pid = dnsx.UnproxiablePid()
 	} else if len(t.relay) > 0 { // relay takes precedence
 		pid = t.relay
 	}

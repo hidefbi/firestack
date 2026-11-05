@@ -22,6 +22,11 @@ var Debug bool = false
 // wrt preventing split dialing, closing tunfd without delay etc.
 var Loopingback = atomic.Bool{}
 
+// GlobalLockdown is a global flag set when the user enables global proxy lockdown.
+// Under lockdown the transports that can not be proxied (Default, Bootstrap, System)
+// must fail closed instead of egressing via the base proxy.
+var GlobalLockdown = atomic.Bool{}
+
 // SingleThreaded is a global flag to run Netstack's packet forwarder
 // in a single-threaded mode.
 var SingleThreaded = atomic.Bool{}
