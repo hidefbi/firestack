@@ -8,6 +8,7 @@ require (
 	github.com/coder/websocket v1.8.14
 	github.com/crazy-max/xgo v0.31.0
 	github.com/elazarl/goproxy v0.0.0-20230808193330-2592e75ae04a
+	github.com/felixge/go-patch-overlay v0.0.0-20250623154806-ec286d1fd9dc
 	github.com/jedisct1/go-dnsstamps v0.0.0-20200621175006-302248eecc94
 	github.com/jedisct1/xsecretbox v0.0.0-20190909160646-b731c21297f9
 	github.com/k-sone/critbitgo v1.4.0
@@ -29,6 +30,7 @@ require (
 	git.schwanenlied.me/yawning/x448.git v0.0.0-20170617130356-01b048fb03d6 // indirect
 	github.com/aead/chacha20 v0.0.0-20180709150244-8b13a72661da // indirect
 	github.com/aead/poly1305 v0.0.0-20180717145839-3fee0db0b635 // indirect
+	github.com/bluekeyes/go-gitdiff v0.5.1 // indirect
 	github.com/cisco/go-hpke v0.0.0-20210215210317-01c430f1f302 // indirect
 	github.com/cisco/go-tls-syntax v0.0.0-20200617162716-46b0cfb76b9b // indirect
 	github.com/cloudflare/circl v1.6.3 // indirect
@@ -40,7 +42,6 @@ require (
 	golang.org/x/exp v0.0.0-20250711185948-6ae5c78190dc // indirect
 	golang.org/x/mod v0.41.0 // indirect
 	golang.org/x/sync v0.23.0 // indirect
-	golang.org/x/text v0.42.0 // indirect
 	golang.org/x/tools v0.51.0 // indirect
 	golang.zx2c4.com/wintun v0.0.0-20230126152724-0fa3db229ce2 // indirect
 )

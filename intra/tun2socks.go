@@ -39,6 +39,7 @@ import (
 	x "github.com/celzero/firestack/intra/backend"
 	"github.com/celzero/firestack/intra/core"
 	crt "github.com/celzero/firestack/intra/core/runtime"
+	"github.com/celzero/firestack/intra/dnsx"
 	"github.com/celzero/firestack/intra/ipn"
 	"github.com/celzero/firestack/intra/netstack"
 	"github.com/celzero/firestack/intra/rnet"
@@ -323,6 +324,20 @@ func FloodWireGuard(y bool) {
 func Loopback(y bool) {
 	ok := settings.Loopingback.CompareAndSwap(!y, y)
 	log.I("tun: loopback? %t / ok? %t", y, ok)
+}
+
+// GlobalLockdown informs the network stack whether global proxy lockdown is on.
+// When on, Default, Bootstrap and System dns must never egress via the base proxy.
+func GlobalLockdown(y bool) {
+	ok := settings.GlobalLockdown.CompareAndSwap(!y, y)
+	log.I("tun: global lockdown? %t / ok? %t", y, ok)
+}
+
+// LockdownProxy sets the proxy id that Default, Bootstrap and System dns egress via under
+// global lockdown. An empty id keeps them blocked.
+func LockdownProxy(pid string) {
+	dnsx.SetLockdownProxy(pid)
+	log.I("tun: lockdown proxy: %q", pid)
 }
 
 // If set, use SystemDNS to resolve undelegated (.lan, .internal, .arpa etc) domains.
