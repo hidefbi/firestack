@@ -37,7 +37,8 @@ LINUX_BUILDDIR=$(BUILDDIR)/linux
 
 # NDK llvm-objcopy for extracting / stripping debug symbols from .so files
 # ANDROID_NDK_HOME is exported by make-aar (or set in the environment)
-NDK_ROOT ?= $(ANDROID_NDK_HOME)
+# not ?= : jitpack exports its own NDK_ROOT (no version in the path)
+NDK_ROOT := $(ANDROID_NDK_HOME)
 # First tries the NDK-canonical path
 # falls back to command -v llvm-objcopy from PATH
 # Last resort: just llvm-objcopy (so it fails with a clearer error)
