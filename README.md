@@ -2,15 +2,15 @@
 
 Firestack is a userspace TCP/UDP connection monitor, firewall, DNS resolver, and multi-hop [WireGuard](https://github.com/wireguard/wireguard-go) client for Android.
 
+It is maintained by [hidefbi](https://github.com/hidefbi) and is the networking core of [DNS Control](https://github.com/hidefbi/dns-control).
+
 [gVisor/netstack](https://github.com/google/gvisor/tree/go/pkg/tcpip) provides a SOCKS-like interface (similar to [badvpn's tun2socks](https://github.com/ambrop72/badvpn)) for TCP/UDP over a TUN device.
 
-This fork is used by [DNS Control](https://github.com/hidefbi/dns-control).
-
-## What's different here
+## What's new here
 
 - The DNS listener has rank hints: `OnPrequery` and `DomainOpts`, with `DNSSummary` carrying the rank.
 - The flow listener gets a connection id (`cid`) on `Preflow`, `Flow` and `Inflow`. It is echoed back in `Postflow`.
-- Only the Android build is kept up to date. Other targets in the Makefile are inherited and not tested here.
+- Android is the only target kept up to date. Other targets in the Makefile are inherited and not tested here.
 
 ## DNS
 
@@ -46,7 +46,7 @@ dependencies {
 
 Build logs are at `https://jitpack.io/com/github/hidefbi/firestack/<commit>/build.log`.
 
-This fork does not publish to Maven Central.
+This repo does not publish to Maven Central.
 
 ## API
 
@@ -92,6 +92,12 @@ To pull the native libraries out of the AAR:
 ```bash
 unzip build/intra/tun2socks.aar 'jni/*' -d build/android
 ```
+
+## Credits
+
+Started from [celzero/firestack](https://github.com/celzero/firestack) (MPL-2.0), which builds on Google's [outline-go-tun2socks](https://github.com/Jigsaw-Code/outline-go-tun2socks) (Apache-2.0). Thanks to those authors. Files keep their original copyright notices.
+
+Third-party code keeps its own license and notices. See [LICENSE](LICENSE).
 
 ## License
 
